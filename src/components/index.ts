@@ -11,5 +11,7 @@ export { ProductModal } from './ProductModal';
 export { CategorySection } from './CategorySection';
 export { TableNumberModal } from './TableNumberModal';
 export { CategoryNav } from './CategoryNav';
+export { PromoPopup } from './PromoPopup';
+export { PoweredBy } from './PoweredBy';
 
 

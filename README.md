@@ -1,36 +1,82 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# UC FIKIR - Digital Menu Platform
 
-## Getting Started
+![Version](https://img.shields.io/badge/version-1.0.0-blue)
+![Tech](https://img.shields.io/badge/tech-Next.js%2014%20%7C%20TypeScript%20%7C%20Postgres-black)
 
-First, run the development server:
+**UC FIKIR**, restoranlar ve kafeler için geliştirilmiş modern, QR tabanlı bir dijital menü platformudur. **Cemil Pub** için özel olarak tasarlanan bu demo, dinamik arayüzü, gelişmiş yönetim paneli ve hızlı performansı ile öne çıkar.
+
+## 🚀 Özellikler
+
+### 📱 Dijital Menü
+- **Dinamik Faz Sistemi:** Günün saatine göre (Sabah, Öğle, Akşam) otomatik değişen tema ve öne çıkan ürünler.
+- **Hızlı Filtreleme:** Kategori bazlı gezinme ve anlık ürün arama.
+- **Akıllı Sepet:** Sepete ürün ekleme, not düşme ve masa numarası ile sipariş verme.
+- **Görsel Şölen:** Yüksek kaliteli ürün görselleri ve akıcı (Framer Motion) animasyonlar.
+- **Happy Hour:** Belirli saatlerde otomatik açılan kampanya bildirimleri.
+
+### 🛡️ Yönetim Paneli (Admin)
+- **Dashboard:** Günlük ciro, masa doluluk oranları ve en çok satılan ürünler.
+- **Ürün Yönetimi:** Ürün ekleme, düzenleme, fiyat güncelleme ve stok durumu (Var/Yok) kontrolü.
+- **Sipariş Takibi:** Gelen siparişleri anlık görüntüleme, durum değiştirme (Hazırlanıyor, Tamamlandı).
+- **Analitik:** Hangi ürünlerin ve kategorilerin daha çok görüntülendiğini izleme.
+
+## 🛠️ Teknolojiler
+
+- **Frontend:** Next.js 14 (App Router), React, TypeScript
+- **Styling:** Tailwind CSS, Lucide Icons
+- **Animasyon:** Framer Motion
+- **Database:** Vercel Postgres (@vercel/postgres)
+- **State Management:** React Context API
+
+## 🏁 Kurulum (Local Development)
+
+Projeyi yerel ortamınızda çalıştırmak için aşağıdaki adımları izleyin:
+
+### 1. Gereksinimler
+- Node.js 18+
+- NPM veya Yarn
+
+### 2. Kurulum
+
+```bash
+# Bağımlılıkları yükleyin
+npm install
+```
+
+### 3. Çevresel Değişkenler (.env)
+
+Kök dizinde `.env` dosyası oluşturun ve Vercel Postgres bilgilerinizi ekleyin:
+
+```env
+POSTGRES_URL="postgres://..."
+POSTGRES_PRISMA_URL="postgres://..."
+POSTGRES_URL_NON_POOLING="postgres://..."
+POSTGRES_USER="default"
+POSTGRES_HOST="..."
+POSTGRES_PASSWORD="..."
+POSTGRES_DATABASE="verceldb"
+```
+
+### 4. Çalıştırma
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
+Tarayıcınızda [http://localhost:3000](http://localhost:3000) adresine gidin.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 5. Veritabanı (Opsiyonel)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Veritabanını sıfırlamak veya demo verileriyle doldurmak için Admin panelindeki "Ayarlar" sayfasını kullanabilirsiniz veya API'yi doğrudan çağırabilirsiniz:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- **POST** `/api/seed`
 
-## Learn More
+## 🤝 Katkıda Bulunma
 
-To learn more about Next.js, take a look at the following resources:
+1. Bu projeyi fork'layın.
+2. Yeni bir branch oluşturun (`git checkout -b feature/YeniOzellik`).
+3. Değişikliklerinizi commit edin (`git commit -m 'Yeni özellik eklendi'`).
+4. Branch'inizi push edin (`git push origin feature/YeniOzellik`).
+5. Pull Request açın.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+**Powered by UC FIKIR**

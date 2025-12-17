@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
 import { useParams, useRouter } from 'next/navigation';
 import { usePhase } from '@/context/PhaseContext';
 import { translations } from '@/lib/mockData';
-import { ProductModal } from '@/components';
+import { ProductModal, PoweredBy } from '@/components';
 import { Product, Category } from '@/types';
 import { ArrowLeft, MapPin, Globe, RefreshCw } from 'lucide-react';
 
@@ -152,6 +152,8 @@ export default function CategoryPage() {
                     ))}
                 </div>
             </div>
+
+            <PoweredBy />
 
             {/* Product Modal */}
             <ProductModal

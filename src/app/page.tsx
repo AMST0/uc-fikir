@@ -5,7 +5,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import { usePhase } from '@/context/PhaseContext';
 import { translations } from '@/lib/mockData';
-import { CategorySection, ProductModal, TableNumberModal } from '@/components';
+import { CategorySection, ProductModal, TableNumberModal, PromoPopup, PoweredBy } from '@/components';
+
 import { Product, Category } from '@/types';
 import { Bell, Globe, MapPin, ChefHat, RefreshCw, ArrowLeft } from 'lucide-react';
 
@@ -260,6 +261,9 @@ export default function MenuPage() {
           Phase {currentPhase}
         </div>
       </div>
+
+      <PoweredBy />
+      <PromoPopup />
 
       {/* Welcome Modal (Phase 3) */}
       <TableNumberModal
