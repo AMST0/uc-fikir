@@ -4,7 +4,7 @@ import { createOrder, getOrders, updateOrderStatus } from '@/lib/db-operations';
 // GET orders
 export async function GET() {
     try {
-        const orders = getOrders();
+        const orders = await getOrders();
 
         return NextResponse.json({
             success: true,
@@ -32,7 +32,7 @@ export async function POST(request: NextRequest) {
             );
         }
 
-        const result = createOrder('rest-cemil', tableNumber, items, notes);
+        const result = await createOrder('rest-cemil', tableNumber, items, notes);
 
         return NextResponse.json({
             success: true,
@@ -60,7 +60,7 @@ export async function PATCH(request: NextRequest) {
             );
         }
 
-        updateOrderStatus(orderId, status);
+        await updateOrderStatus(orderId, status);
 
         return NextResponse.json({
             success: true,

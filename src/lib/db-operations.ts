@@ -1,4 +1,4 @@
-import { getDatabase, generateId } from './database';
+import { sql, generateId, initializeDatabase } from './database';
 
 // Product images from Unsplash (direct CDN URLs that work)
 const productImages: Record<string, string> = {
@@ -89,12 +89,13 @@ function getProductImage(name: string): string {
 }
 
 // Seed data based on Cemil Pub style menu
-export function seedDatabase() {
-    const db = getDatabase();
+export async function seedDatabase() {
+    // Ensure tables exist
+    await initializeDatabase();
 
     // Check if already seeded
-    const existingRestaurant = db.prepare('SELECT id FROM restaurants WHERE slug = ?').get('cemil-pub');
-    if (existingRestaurant) {
+    const existingRestaurant = await sql`SELECT id FROM restaurants WHERE slug = 'cemil-pub'`;
+    if (existingRestaurant.rows.length > 0) {
         console.log('Database already seeded');
         return;
     }
@@ -103,10 +104,10 @@ export function seedDatabase() {
 
     // Insert restaurant
     const restaurantId = 'rest-cemil';
-    db.prepare(`
+    await sql`
     INSERT INTO restaurants (id, name, slug, logo, primary_color, default_phase)
-    VALUES (?, ?, ?, ?, ?, ?)
-  `).run(restaurantId, 'Cemil Pub', 'cemil-pub', '/logo.png', '#e94560', 1);
+    VALUES (${restaurantId}, 'Cemil Pub', 'cemil-pub', '/logo.png', '#e94560', 1)
+  `;
 
     // Categories with products (based on typical pub menu)
     const categories = [
@@ -254,81 +255,51 @@ export function seedDatabase() {
         },
     ];
 
-    // Insert categories and products
-    const insertCategory = db.prepare(`
-    INSERT INTO categories (id, restaurant_id, name_tr, name_en, icon, sort_order, availability_start, availability_end)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-  `);
+    for (const [catIndex, cat] of categories.entries()) {
+        // Insert Category
+        await sql`
+      INSERT INTO categories (id, restaurant_id, name_tr, name_en, icon, sort_order, availability_start, availability_end)
+      VALUES (${cat.id}, ${restaurantId}, ${cat.name_tr}, ${cat.name_en}, ${cat.icon}, ${catIndex}, ${cat.availability_start || null}, ${cat.availability_end || null})
+    `;
 
-    const insertProduct = db.prepare(`
-    INSERT INTO products (id, category_id, name_tr, name_en, description_tr, description_en, price, image, is_available, sort_order)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-  `);
-
-    categories.forEach((cat, catIndex) => {
-        insertCategory.run(
-            cat.id,
-            restaurantId,
-            cat.name_tr,
-            cat.name_en,
-            cat.icon,
-            catIndex,
-            cat.availability_start || null,
-            cat.availability_end || null
-        );
-
-        cat.products.forEach((prod, prodIndex) => {
+        for (const [prodIndex, prod] of cat.products.entries()) {
             const productId = `prod-${cat.id.replace('cat-', '')}-${prodIndex}`;
-            insertProduct.run(
-                productId,
-                cat.id,
-                prod.name_tr,
-                prod.name_en,
-                prod.desc_tr,
-                prod.desc_tr,
-                prod.price,
-                getProductImage(prod.name_tr),
-                (prod as any).available !== false ? 1 : 0,
-                prodIndex
-            );
-        });
-    });
+            await sql`
+        INSERT INTO products (id, category_id, name_tr, name_en, description_tr, description_en, price, image, is_available, sort_order)
+        VALUES (
+          ${productId}, 
+          ${cat.id}, 
+          ${prod.name_tr}, 
+          ${prod.name_en}, 
+          ${prod.desc_tr}, 
+          ${prod.desc_tr}, 
+          ${prod.price}, 
+          ${getProductImage(prod.name_tr)}, 
+          ${(prod as any).available !== false ? 1 : 0}, 
+          ${prodIndex}
+        )
+      `;
+        }
+    }
 
     console.log('Database seeded successfully!');
 }
 
 // Get all categories with products
-export function getCategoriesWithProducts(restaurantId: string = 'rest-cemil') {
-    const db = getDatabase();
-
-    const categories = db.prepare(`
+export async function getCategoriesWithProducts(restaurantId: string = 'rest-cemil') {
+    const categories = await sql`
     SELECT * FROM categories 
-    WHERE restaurant_id = ? AND is_active = 1 
+    WHERE restaurant_id = ${restaurantId} AND is_active = 1 
     ORDER BY sort_order
-  `).all(restaurantId) as {
-        id: string;
-        name_tr: string;
-        name_en: string;
-        icon: string;
-        availability_start: string | null;
-        availability_end: string | null;
-    }[];
+  `;
 
-    return categories.map(cat => {
-        const products = db.prepare(`
+    // Use Promise.all to fetch products for all categories in parallel
+    const categoriesWithProducts = await Promise.all(categories.rows.map(async (cat: any) => {
+        const products = await sql`
       SELECT * FROM products 
-      WHERE category_id = ? 
+      WHERE category_id = ${cat.id} 
       ORDER BY sort_order
-    `).all(cat.id) as {
-            id: string;
-            name_tr: string;
-            name_en: string;
-            description_tr: string;
-            description_en: string;
-            price: number;
-            image: string;
-            is_available: number;
-        }[];
+    `;
 
         return {
             id: cat.id,
@@ -337,66 +308,67 @@ export function getCategoriesWithProducts(restaurantId: string = 'rest-cemil') {
             availability_hours: cat.availability_start && cat.availability_end
                 ? { start: cat.availability_start, end: cat.availability_end }
                 : undefined,
-            products: products.map(p => ({
+            products: products.rows.map((p: any) => ({
                 id: p.id,
                 name: { tr: p.name_tr, en: p.name_en || p.name_tr },
                 description: { tr: p.description_tr, en: p.description_en || p.description_tr },
-                price: p.price,
+                price: Number(p.price), // Postgres returns decimals as strings sometimes
                 image: p.image,
                 is_available: p.is_available === 1,
             }))
         };
-    });
+    }));
+
+    return categoriesWithProducts;
 }
 
 // Create order
-export function createOrder(
+export async function createOrder(
     restaurantId: string,
     tableNumber: string,
     items: { productId: string; quantity: number; unitPrice: number }[],
     notes?: string
 ) {
-    const db = getDatabase();
     const orderId = generateId();
     const total = items.reduce((sum, item) => sum + item.quantity * item.unitPrice, 0);
 
-    db.prepare(`
+    // Note: Better to wrap in transaction, but sticking to basic implementation for now
+    await sql`
     INSERT INTO orders (id, restaurant_id, table_number, total, notes)
-    VALUES (?, ?, ?, ?, ?)
-  `).run(orderId, restaurantId, tableNumber, total, notes || null);
+    VALUES (${orderId}, ${restaurantId}, ${tableNumber}, ${total}, ${notes || null})
+  `;
 
-    const insertItem = db.prepare(`
-    INSERT INTO order_items (id, order_id, product_id, quantity, unit_price)
-    VALUES (?, ?, ?, ?, ?)
-  `);
-
-    items.forEach(item => {
-        insertItem.run(generateId(), orderId, item.productId, item.quantity, item.unitPrice);
-    });
+    for (const item of items) {
+        const itemId = generateId();
+        await sql`
+      INSERT INTO order_items (id, order_id, product_id, quantity, unit_price)
+      VALUES (${itemId}, ${orderId}, ${item.productId}, ${item.quantity}, ${item.unitPrice})
+    `;
+    }
 
     return { orderId, total };
 }
 
 // Get orders
-export function getOrders(restaurantId: string = 'rest-cemil') {
-    const db = getDatabase();
-
-    const orders = db.prepare(`
+export async function getOrders(restaurantId: string = 'rest-cemil') {
+    const result = await sql`
     SELECT o.*, 
            (SELECT COUNT(*) FROM order_items WHERE order_id = o.id) as item_count
     FROM orders o
-    WHERE o.restaurant_id = ?
+    WHERE o.restaurant_id = ${restaurantId}
     ORDER BY o.created_at DESC
     LIMIT 50
-  `).all(restaurantId);
+  `;
 
-    return orders;
+    return result.rows.map(order => ({
+        ...order,
+        total: Number(order.total)
+    }));
 }
 
 // Update order status
-export function updateOrderStatus(orderId: string, status: string) {
-    const db = getDatabase();
-    db.prepare(`
-    UPDATE orders SET status = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?
-  `).run(status, orderId);
+export async function updateOrderStatus(orderId: string, status: string) {
+    await sql`
+    UPDATE orders SET status = ${status}, updated_at = CURRENT_TIMESTAMP WHERE id = ${orderId}
+  `;
 }

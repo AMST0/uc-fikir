@@ -868,8 +868,8 @@ function SettingsContent() {
                 <div className="space-y-2 text-gray-400 text-sm">
                     <p>• <span className="text-white">10</span> kategori</p>
                     <p>• <span className="text-white">50+</span> ürün (Cemil Pub tarzı menü)</p>
-                    <p>• <span className="text-white">SQLite</span> veritabanı</p>
-                    <p>• <span className="text-white">better-sqlite3</span> paketi</p>
+                    <p>• <span className="text-white">Vercel Postgres</span> veritabanı</p>
+                    <p>• <span className="text-white">Serverless</span></p>
                 </div>
             </div>
         </div>

@@ -1,141 +1,144 @@
-import Database from 'better-sqlite3';
-import path from 'path';
+import { sql } from '@vercel/postgres';
 
-// Database file path
-const dbPath = path.join(process.cwd(), 'data', 'menu.db');
+// Ensure database tables exist
+export async function initializeDatabase() {
+  try {
+    // Enable UUID extension if needed, though we generate random strings in JS
+    // await sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp";`;
 
-// Ensure database singleton
-let db: Database.Database | null = null;
+    // Restaurants table
+    await sql`
+      CREATE TABLE IF NOT EXISTS restaurants (
+        id VARCHAR(50) PRIMARY KEY,
+        name VARCHAR(255) NOT NULL,
+        slug VARCHAR(255) UNIQUE NOT NULL,
+        logo TEXT,
+        primary_color VARCHAR(50) DEFAULT '#e94560',
+        accent_color VARCHAR(50) DEFAULT '#1a1a2e',
+        default_phase INTEGER DEFAULT 1,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      );
+    `;
 
-export function getDatabase(): Database.Database {
-  if (!db) {
-    // Create data directory if it doesn't exist
-    const fs = require('fs');
-    const dataDir = path.dirname(dbPath);
-    if (!fs.existsSync(dataDir)) {
-      fs.mkdirSync(dataDir, { recursive: true });
-    }
+    // Categories table
+    await sql`
+      CREATE TABLE IF NOT EXISTS categories (
+        id VARCHAR(50) PRIMARY KEY,
+        restaurant_id VARCHAR(50) NOT NULL,
+        name_tr VARCHAR(255) NOT NULL,
+        name_en VARCHAR(255),
+        icon VARCHAR(50),
+        sort_order INTEGER DEFAULT 0,
+        availability_start VARCHAR(10),
+        availability_end VARCHAR(10),
+        is_active INTEGER DEFAULT 1,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (restaurant_id) REFERENCES restaurants(id)
+      );
+    `;
 
-    db = new Database(dbPath);
-    db.pragma('journal_mode = WAL');
-    initializeDatabase(db);
+    // Products table
+    await sql`
+      CREATE TABLE IF NOT EXISTS products (
+        id VARCHAR(50) PRIMARY KEY,
+        category_id VARCHAR(50) NOT NULL,
+        name_tr VARCHAR(255) NOT NULL,
+        name_en VARCHAR(255),
+        description_tr TEXT,
+        description_en TEXT,
+        price DECIMAL(10, 2) NOT NULL,
+        image TEXT,
+        is_available INTEGER DEFAULT 1,
+        sort_order INTEGER DEFAULT 0,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (category_id) REFERENCES categories(id)
+      );
+    `;
+
+    // Related products
+    await sql`
+      CREATE TABLE IF NOT EXISTS related_products (
+        product_id VARCHAR(50) NOT NULL,
+        related_product_id VARCHAR(50) NOT NULL,
+        PRIMARY KEY (product_id, related_product_id),
+        FOREIGN KEY (product_id) REFERENCES products(id),
+        FOREIGN KEY (related_product_id) REFERENCES products(id)
+      );
+    `;
+
+    // Orders table
+    await sql`
+      CREATE TABLE IF NOT EXISTS orders (
+        id VARCHAR(50) PRIMARY KEY,
+        restaurant_id VARCHAR(50) NOT NULL,
+        table_number VARCHAR(20),
+        status VARCHAR(20) DEFAULT 'pending',
+        total DECIMAL(10, 2) NOT NULL,
+        notes TEXT,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (restaurant_id) REFERENCES restaurants(id)
+      );
+    `;
+
+    // Order items
+    await sql`
+      CREATE TABLE IF NOT EXISTS order_items (
+        id VARCHAR(50) PRIMARY KEY,
+        order_id VARCHAR(50) NOT NULL,
+        product_id VARCHAR(50) NOT NULL,
+        quantity INTEGER NOT NULL,
+        unit_price DECIMAL(10, 2) NOT NULL,
+        FOREIGN KEY (order_id) REFERENCES orders(id),
+        FOREIGN KEY (product_id) REFERENCES products(id)
+      );
+    `;
+
+    // Product views
+    await sql`
+      CREATE TABLE IF NOT EXISTS product_views (
+        id VARCHAR(50) PRIMARY KEY,
+        product_id VARCHAR(50) NOT NULL,
+        category_id VARCHAR(50),
+        session_id VARCHAR(100),
+        ip_address VARCHAR(50),
+        user_agent TEXT,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (product_id) REFERENCES products(id),
+        FOREIGN KEY (category_id) REFERENCES categories(id)
+      );
+    `;
+
+    // Category views
+    await sql`
+      CREATE TABLE IF NOT EXISTS category_views (
+        id VARCHAR(50) PRIMARY KEY,
+        category_id VARCHAR(50) NOT NULL,
+        session_id VARCHAR(100),
+        ip_address VARCHAR(50),
+        user_agent TEXT,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (category_id) REFERENCES categories(id)
+      );
+    `;
+
+    // Indexes
+    // Note: Postgres creates indexes on primary keys automatically.
+    // We add explicit indexes for foreign keys + commonly queried fields.
+    await sql`CREATE INDEX IF NOT EXISTS idx_categories_restaurant ON categories(restaurant_id)`;
+    await sql`CREATE INDEX IF NOT EXISTS idx_products_category ON products(category_id)`;
+    await sql`CREATE INDEX IF NOT EXISTS idx_orders_restaurant ON orders(restaurant_id)`;
+    await sql`CREATE INDEX IF NOT EXISTS idx_orders_status ON orders(status)`;
+    await sql`CREATE INDEX IF NOT EXISTS idx_order_items_order ON order_items(order_id)`;
+    await sql`CREATE INDEX IF NOT EXISTS idx_product_views_product ON product_views(product_id)`;
+    await sql`CREATE INDEX IF NOT EXISTS idx_product_views_date ON product_views(created_at)`;
+    await sql`CREATE INDEX IF NOT EXISTS idx_category_views_category ON category_views(category_id)`;
+
+    console.log('Database initialized successfully');
+  } catch (error) {
+    console.error('Database initialization error:', error);
+    throw error;
   }
-  return db;
-}
-
-function initializeDatabase(database: Database.Database) {
-  // Create tables
-  database.exec(`
-    -- Restaurants table
-    CREATE TABLE IF NOT EXISTS restaurants (
-      id TEXT PRIMARY KEY,
-      name TEXT NOT NULL,
-      slug TEXT UNIQUE NOT NULL,
-      logo TEXT,
-      primary_color TEXT DEFAULT '#e94560',
-      accent_color TEXT DEFAULT '#1a1a2e',
-      default_phase INTEGER DEFAULT 1,
-      created_at DATETIME DEFAULT CURRENT_TIMESTAMP
-    );
-
-    -- Categories table
-    CREATE TABLE IF NOT EXISTS categories (
-      id TEXT PRIMARY KEY,
-      restaurant_id TEXT NOT NULL,
-      name_tr TEXT NOT NULL,
-      name_en TEXT,
-      icon TEXT,
-      sort_order INTEGER DEFAULT 0,
-      availability_start TEXT,
-      availability_end TEXT,
-      is_active INTEGER DEFAULT 1,
-      created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-      FOREIGN KEY (restaurant_id) REFERENCES restaurants(id)
-    );
-
-    -- Products table
-    CREATE TABLE IF NOT EXISTS products (
-      id TEXT PRIMARY KEY,
-      category_id TEXT NOT NULL,
-      name_tr TEXT NOT NULL,
-      name_en TEXT,
-      description_tr TEXT,
-      description_en TEXT,
-      price REAL NOT NULL,
-      image TEXT,
-      is_available INTEGER DEFAULT 1,
-      sort_order INTEGER DEFAULT 0,
-      created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-      FOREIGN KEY (category_id) REFERENCES categories(id)
-    );
-
-    -- Related products (for upsells)
-    CREATE TABLE IF NOT EXISTS related_products (
-      product_id TEXT NOT NULL,
-      related_product_id TEXT NOT NULL,
-      PRIMARY KEY (product_id, related_product_id),
-      FOREIGN KEY (product_id) REFERENCES products(id),
-      FOREIGN KEY (related_product_id) REFERENCES products(id)
-    );
-
-    -- Orders table
-    CREATE TABLE IF NOT EXISTS orders (
-      id TEXT PRIMARY KEY,
-      restaurant_id TEXT NOT NULL,
-      table_number TEXT,
-      status TEXT DEFAULT 'pending',
-      total REAL NOT NULL,
-      notes TEXT,
-      created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-      updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-      FOREIGN KEY (restaurant_id) REFERENCES restaurants(id)
-    );
-
-    -- Order items table
-    CREATE TABLE IF NOT EXISTS order_items (
-      id TEXT PRIMARY KEY,
-      order_id TEXT NOT NULL,
-      product_id TEXT NOT NULL,
-      quantity INTEGER NOT NULL,
-      unit_price REAL NOT NULL,
-      FOREIGN KEY (order_id) REFERENCES orders(id),
-      FOREIGN KEY (product_id) REFERENCES products(id)
-    );
-
-    -- Product views table (for analytics)
-    CREATE TABLE IF NOT EXISTS product_views (
-      id TEXT PRIMARY KEY,
-      product_id TEXT NOT NULL,
-      category_id TEXT,
-      session_id TEXT,
-      ip_address TEXT,
-      user_agent TEXT,
-      created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-      FOREIGN KEY (product_id) REFERENCES products(id),
-      FOREIGN KEY (category_id) REFERENCES categories(id)
-    );
-
-    -- Category views table
-    CREATE TABLE IF NOT EXISTS category_views (
-      id TEXT PRIMARY KEY,
-      category_id TEXT NOT NULL,
-      session_id TEXT,
-      ip_address TEXT,
-      user_agent TEXT,
-      created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-      FOREIGN KEY (category_id) REFERENCES categories(id)
-    );
-
-    -- Create indexes
-    CREATE INDEX IF NOT EXISTS idx_categories_restaurant ON categories(restaurant_id);
-    CREATE INDEX IF NOT EXISTS idx_products_category ON products(category_id);
-    CREATE INDEX IF NOT EXISTS idx_orders_restaurant ON orders(restaurant_id);
-    CREATE INDEX IF NOT EXISTS idx_orders_status ON orders(status);
-    CREATE INDEX IF NOT EXISTS idx_order_items_order ON order_items(order_id);
-    CREATE INDEX IF NOT EXISTS idx_product_views_product ON product_views(product_id);
-    CREATE INDEX IF NOT EXISTS idx_product_views_date ON product_views(created_at);
-    CREATE INDEX IF NOT EXISTS idx_category_views_category ON category_views(category_id);
-  `);
 }
 
 // Helper to generate IDs
@@ -143,4 +146,4 @@ export function generateId(): string {
   return Math.random().toString(36).substring(2, 9) + Date.now().toString(36);
 }
 
-export { Database };
+export { sql };

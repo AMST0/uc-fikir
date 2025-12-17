@@ -1,10 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getDatabase } from '@/lib/database';
+import { db } from '@vercel/postgres';
 
 // PATCH - Update product
 export async function PATCH(request: NextRequest) {
+    let client;
     try {
-        const db = getDatabase();
+        client = await db.connect();
         const body = await request.json();
         const { productId, ...updates } = body;
 
@@ -15,39 +16,40 @@ export async function PATCH(request: NextRequest) {
         // Build update query dynamically
         const updateFields: string[] = [];
         const values: any[] = [];
+        let paramIndex = 1;
 
         if (updates.is_available !== undefined) {
-            updateFields.push('is_available = ?');
+            updateFields.push(`is_available = $${paramIndex++}`);
             values.push(updates.is_available ? 1 : 0);
         }
 
         if (updates.name_tr !== undefined) {
-            updateFields.push('name_tr = ?');
+            updateFields.push(`name_tr = $${paramIndex++}`);
             values.push(updates.name_tr);
         }
 
         if (updates.name_en !== undefined) {
-            updateFields.push('name_en = ?');
+            updateFields.push(`name_en = $${paramIndex++}`);
             values.push(updates.name_en);
         }
 
         if (updates.description_tr !== undefined) {
-            updateFields.push('description_tr = ?');
+            updateFields.push(`description_tr = $${paramIndex++}`);
             values.push(updates.description_tr);
         }
 
         if (updates.description_en !== undefined) {
-            updateFields.push('description_en = ?');
+            updateFields.push(`description_en = $${paramIndex++}`);
             values.push(updates.description_en);
         }
 
         if (updates.price !== undefined) {
-            updateFields.push('price = ?');
+            updateFields.push(`price = $${paramIndex++}`);
             values.push(updates.price);
         }
 
         if (updates.image !== undefined) {
-            updateFields.push('image = ?');
+            updateFields.push(`image = $${paramIndex++}`);
             values.push(updates.image);
         }
 
@@ -56,16 +58,15 @@ export async function PATCH(request: NextRequest) {
         }
 
         values.push(productId);
-
-        const stmt = db.prepare(`
+        const query = `
             UPDATE products 
             SET ${updateFields.join(', ')} 
-            WHERE id = ?
-        `);
+            WHERE id = $${paramIndex}
+        `;
 
-        const result = stmt.run(...values);
+        const result = await client.query(query, values);
 
-        if (result.changes === 0) {
+        if (result.rowCount === 0) {
             return NextResponse.json({ success: false, error: 'Product not found' }, { status: 404 });
         }
 
@@ -73,13 +74,16 @@ export async function PATCH(request: NextRequest) {
     } catch (error) {
         console.error('Error updating product:', error);
         return NextResponse.json({ success: false, error: 'Failed to update product' }, { status: 500 });
+    } finally {
+        if (client) client.release();
     }
 }
 
 // POST - Create new product
 export async function POST(request: NextRequest) {
+    let client;
     try {
-        const db = getDatabase();
+        client = await db.connect();
         const body = await request.json();
         const { categoryId, name_tr, name_en, description_tr, description_en, price, image } = body;
 
@@ -89,24 +93,25 @@ export async function POST(request: NextRequest) {
 
         const id = `prod-${Date.now()}`;
 
-        const stmt = db.prepare(`
+        await client.sql`
             INSERT INTO products (id, category_id, name_tr, name_en, description_tr, description_en, price, image, is_available)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, 1)
-        `);
-
-        stmt.run(id, categoryId, name_tr, name_en || name_tr, description_tr || '', description_en || '', price, image || '');
+            VALUES (${id}, ${categoryId}, ${name_tr}, ${name_en || name_tr}, ${description_tr || ''}, ${description_en || ''}, ${price}, ${image || ''}, 1)
+        `;
 
         return NextResponse.json({ success: true, productId: id });
     } catch (error) {
         console.error('Error creating product:', error);
         return NextResponse.json({ success: false, error: 'Failed to create product' }, { status: 500 });
+    } finally {
+        if (client) client.release();
     }
 }
 
 // DELETE - Remove product
 export async function DELETE(request: NextRequest) {
+    let client;
     try {
-        const db = getDatabase();
+        client = await db.connect();
         const { searchParams } = new URL(request.url);
         const productId = searchParams.get('id');
 
@@ -114,10 +119,9 @@ export async function DELETE(request: NextRequest) {
             return NextResponse.json({ success: false, error: 'Product ID required' }, { status: 400 });
         }
 
-        const stmt = db.prepare('DELETE FROM products WHERE id = ?');
-        const result = stmt.run(productId);
+        const result = await client.sql`DELETE FROM products WHERE id = ${productId}`;
 
-        if (result.changes === 0) {
+        if (result.rowCount === 0) {
             return NextResponse.json({ success: false, error: 'Product not found' }, { status: 404 });
         }
 
@@ -125,5 +129,7 @@ export async function DELETE(request: NextRequest) {
     } catch (error) {
         console.error('Error deleting product:', error);
         return NextResponse.json({ success: false, error: 'Failed to delete product' }, { status: 500 });
+    } finally {
+        if (client) client.release();
     }
 }
