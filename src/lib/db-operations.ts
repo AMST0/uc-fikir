@@ -288,7 +288,7 @@ export function seedDatabase() {
                 prod.desc_tr,
                 prod.price,
                 getProductImage(prod.name_tr),
-                prod.available !== false ? 1 : 0,
+                (prod as any).available !== false ? 1 : 0,
                 prodIndex
             );
         });
