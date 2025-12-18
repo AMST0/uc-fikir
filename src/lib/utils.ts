@@ -63,8 +63,10 @@ export const getPhaseFeatures = (phase: Phase): PhaseFeatures => {
 /**
  * Format price with currency
  */
-export const formatPrice = (price: number, currency: string = '₺'): string => {
-    return `${price.toFixed(2)} ${currency}`;
+export const formatPrice = (price: number | string, currency: string = '₺'): string => {
+    const numPrice = typeof price === 'string' ? parseFloat(price) : price;
+    if (isNaN(numPrice)) return `0.00 ${currency}`;
+    return `${numPrice.toFixed(2)} ${currency}`;
 };
 
 /**
