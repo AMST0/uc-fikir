@@ -1,9 +1,28 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createOrder, getOrders, updateOrderStatus } from '@/lib/db-operations';
+import { createOrder, getOrders, updateOrderStatus, getOrderDetails } from '@/lib/db-operations';
 
 // GET orders
-export async function GET() {
+export async function GET(request: NextRequest) {
     try {
+        const { searchParams } = new URL(request.url);
+        const orderId = searchParams.get('orderId');
+
+        // If orderId is provided, get order details
+        if (orderId) {
+            const orderDetails = await getOrderDetails(orderId);
+            if (!orderDetails) {
+                return NextResponse.json(
+                    { success: false, error: 'Order not found' },
+                    { status: 404 }
+                );
+            }
+            return NextResponse.json({
+                success: true,
+                data: orderDetails
+            });
+        }
+
+        // Otherwise, get all orders
         const orders = await getOrders();
 
         return NextResponse.json({

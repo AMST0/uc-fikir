@@ -3,7 +3,6 @@
 import React, { useState, useEffect } from 'react';
 import { Eye, RefreshCw, TrendingUp, Users, Activity, Info, BarChart3 } from 'lucide-react';
 import { formatPrice } from '@/lib/utils';
-import { usePhase } from '@/context/PhaseContext';
 
 interface Order {
     id: string;
@@ -33,7 +32,6 @@ export default function AnalyticsPage() {
     const [viewData, setViewData] = useState<ViewData | null>(null);
     const [loading, setLoading] = useState(true);
     const [period, setPeriod] = useState('7d');
-    const { currentPhase, features } = usePhase();
 
     useEffect(() => {
         fetchData();
@@ -98,14 +96,6 @@ export default function AnalyticsPage() {
                     <p className="text-gray-400 text-sm">Veritabanından gerçek zamanlı veriler</p>
                 </div>
                 <div className="flex items-center gap-4">
-                    {/* Current Phase Indicator */}
-                    <div className="flex items-center gap-2 px-3 py-1.5 bg-gray-800 rounded-lg">
-                        <Activity size={14} className={`${currentPhase >= 2 ? 'text-green-400' : 'text-gray-500'}`} />
-                        <span className="text-sm text-gray-400">
-                            Faz {currentPhase}
-                            {currentPhase < 2 && <span className="text-yellow-400 ml-1">(Analitik kapalı)</span>}
-                        </span>
-                    </div>
                     <button
                         onClick={() => { fetchData(); fetchViews(); }}
                         className="flex items-center gap-2 px-3 py-1.5 bg-gray-800 hover:bg-gray-700 rounded-lg text-gray-400 text-sm transition-colors"
@@ -115,20 +105,6 @@ export default function AnalyticsPage() {
                     </button>
                 </div>
             </div>
-
-            {/* Phase Info Banner */}
-            {currentPhase < 2 && (
-                <div className="bg-yellow-500/10 border border-yellow-500/30 rounded-xl p-4 flex items-start gap-3">
-                    <Info size={20} className="text-yellow-400 mt-0.5 flex-shrink-0" />
-                    <div>
-                        <h4 className="text-yellow-400 font-medium">Analitik Modu Devre Dışı</h4>
-                        <p className="text-gray-400 text-sm mt-1">
-                            Şu anda <span className="text-white">Faz 1</span> aktif. Ürün görüntüleme takibi sadece <span className="text-white">Faz 2</span> ve üzerinde çalışır.
-                            Ayarlar sayfasından faz değişikliği yapabilirsiniz.
-                        </p>
-                    </div>
-                </div>
-            )}
 
             {/* Period Filter */}
             <div className="flex gap-2">
@@ -211,8 +187,8 @@ export default function AnalyticsPage() {
                     )}
                 </div>
                 <div className="space-y-3">
-                    {viewData && viewData.topProducts.filter(p => p.view_count > 0).length > 0 ? (
-                        viewData.topProducts.filter(p => p.view_count > 0).slice(0, 10).map((product, index) => (
+                    {viewData && viewData.topProducts && viewData.topProducts.filter(p => Number(p.view_count) > 0).length > 0 ? (
+                        viewData.topProducts.filter(p => Number(p.view_count) > 0).slice(0, 10).map((product, index) => (
                             <div key={product.id} className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-800/50 transition-colors">
                                 <span className={`font-bold w-6 ${index < 3 ? 'text-rose-400' : 'text-gray-500'}`}>
                                     {index + 1}
@@ -238,9 +214,7 @@ export default function AnalyticsPage() {
                             <Eye size={40} className="text-gray-600 mx-auto mb-3" />
                             <p className="text-gray-400">Henüz görüntüleme verisi yok</p>
                             <p className="text-gray-500 text-sm mt-1">
-                                {currentPhase < 2
-                                    ? 'Görüntüleme takibi için Faz 2\'ye geçin'
-                                    : 'Müşteriler ürünleri görüntülediğinde burada listelenecek'}
+                                Müşteriler ürünleri görüntülediğinde burada listelenecek
                             </p>
                         </div>
                     )}
@@ -248,11 +222,11 @@ export default function AnalyticsPage() {
             </div>
 
             {/* Most Viewed Categories */}
-            {viewData && viewData.topCategories && viewData.topCategories.filter(c => c.view_count > 0).length > 0 && (
+            {viewData && viewData.topCategories && viewData.topCategories.filter(c => Number(c.view_count) > 0).length > 0 && (
                 <div className="bg-gray-900 rounded-2xl border border-gray-800 p-6">
                     <h3 className="text-lg font-semibold text-white mb-4">📁 En Çok Görüntülenen Kategoriler</h3>
                     <div className="grid grid-cols-2 lg:grid-cols-5 gap-3">
-                        {viewData.topCategories.filter(c => c.view_count > 0).slice(0, 5).map((cat, index) => (
+                        {viewData.topCategories.filter(c => Number(c.view_count) > 0).slice(0, 5).map((cat) => (
                             <div key={cat.id} className="bg-gray-800/50 rounded-xl p-4 text-center">
                                 <span className="text-3xl mb-2 block">{cat.icon}</span>
                                 <p className="text-white font-medium text-sm truncate">{cat.name_tr}</p>

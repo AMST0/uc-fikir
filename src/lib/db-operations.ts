@@ -372,3 +372,43 @@ export async function updateOrderStatus(orderId: string, status: string) {
     UPDATE orders SET status = ${status}, updated_at = CURRENT_TIMESTAMP WHERE id = ${orderId}
   `;
 }
+
+// Get order details with items
+export async function getOrderDetails(orderId: string) {
+    const orderResult = await sql`
+    SELECT o.*, 
+           (SELECT COUNT(*) FROM order_items WHERE order_id = o.id) as item_count
+    FROM orders o
+    WHERE o.id = ${orderId}
+  `;
+
+    if (orderResult.rows.length === 0) {
+        return null;
+    }
+
+    const order = orderResult.rows[0];
+
+    // Get order items with product details
+    const itemsResult = await sql`
+    SELECT oi.*, p.name_tr, p.name_en, p.image, p.description_tr
+    FROM order_items oi
+    LEFT JOIN products p ON oi.product_id = p.id
+    WHERE oi.order_id = ${orderId}
+  `;
+
+    return {
+        ...order,
+        total: Number(order.total),
+        items: itemsResult.rows.map(item => ({
+            id: item.id,
+            productId: item.product_id,
+            name: { tr: item.name_tr || 'Ürün', en: item.name_en || 'Product' },
+            description: item.description_tr || '',
+            image: item.image || '',
+            quantity: Number(item.quantity),
+            unitPrice: Number(item.unit_price),
+            subtotal: Number(item.quantity) * Number(item.unit_price)
+        }))
+    };
+}
+
