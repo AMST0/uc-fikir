@@ -72,7 +72,7 @@ export async function GET(request: NextRequest) {
       FROM products p
       LEFT JOIN product_views pv ON p.id = pv.product_id AND pv.created_at >= NOW() - ${interval}::interval
       LEFT JOIN categories c ON p.category_id = c.id
-      GROUP BY p.id
+      GROUP BY p.id, p.name_tr, p.name_en, p.image, p.price, c.name_tr
       ORDER BY view_count DESC
       LIMIT 10
     `;
@@ -88,7 +88,7 @@ export async function GET(request: NextRequest) {
       FROM categories c
       LEFT JOIN category_views cv ON c.id = cv.category_id AND cv.created_at >= NOW() - ${interval}::interval
       WHERE c.is_active = 1
-      GROUP BY c.id
+      GROUP BY c.id, c.name_tr, c.name_en, c.icon
       ORDER BY view_count DESC
       LIMIT 10
     `;

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { createContext, useContext, useState, useCallback } from 'react';
+import React, { createContext, useContext, useState, useCallback, useEffect } from 'react';
 import { Phase, PhaseFeatures, CartItem, Product } from '@/types';
 import { getPhaseFeatures } from '@/lib/utils';
 import { mockRestaurant } from '@/lib/mockData';
@@ -42,35 +42,76 @@ interface PhaseProviderProps {
     children: React.ReactNode;
 }
 
+// Helper to get phase from localStorage
+const getStoredPhase = (): Phase => {
+    if (typeof window === 'undefined') return mockRestaurant.defaultPhase;
+    const stored = localStorage.getItem('uc-fikir-phase');
+    if (stored) {
+        const parsed = parseInt(stored, 10);
+        if (parsed === 1 || parsed === 2 || parsed === 3) {
+            return parsed as Phase;
+        }
+    }
+    return mockRestaurant.defaultPhase;
+};
+
+// Helper to get language from localStorage
+const getStoredLanguage = (): 'tr' | 'en' => {
+    if (typeof window === 'undefined') return 'tr';
+    const stored = localStorage.getItem('uc-fikir-language');
+    if (stored === 'en') return 'en';
+    return 'tr';
+};
+
 export const PhaseProvider: React.FC<PhaseProviderProps> = ({ children }) => {
-    // Initialize phase from mock data
+    // Initialize phase from localStorage or mock data
     const [currentPhase, setCurrentPhase] = useState<Phase>(mockRestaurant.defaultPhase);
     const [cart, setCart] = useState<CartItem[]>([]);
     const [toast, setToast] = useState({ message: '', visible: false });
-    const [language, setLanguage] = useState<'tr' | 'en'>('tr');
+    const [language, setLanguageState] = useState<'tr' | 'en'>('tr');
     const [tableNumber, setTableNumberState] = useState<string>('');
     const [hasSetTable, setHasSetTable] = useState(false);
+    const [isHydrated, setIsHydrated] = useState(false);
+
+    // Hydrate state from localStorage on mount
+    useEffect(() => {
+        setCurrentPhase(getStoredPhase());
+        setLanguageState(getStoredLanguage());
+        setIsHydrated(true);
+    }, []);
 
     const features = getPhaseFeatures(currentPhase);
-
-    const setPhase = useCallback((phase: Phase) => {
-        setCurrentPhase(phase);
-
-        // Show toast with phase description
-        const phaseDescriptions = {
-            1: 'Phase 1: Dijital Vitrin - Kategoriler, Ürünler, Temel Görünüm',
-            2: 'Phase 2: Analitik - + Analitik Hooks, Değerlendirme Popup',
-            3: 'Phase 3: Tam Ticaret - + Sipariş, Upsell, Stok, Zamanlı Menü',
-        };
-
-        showToast(phaseDescriptions[phase]);
-    }, []);
 
     const showToast = useCallback((message: string) => {
         setToast({ message, visible: true });
         setTimeout(() => {
             setToast({ message: '', visible: false });
         }, 3000);
+    }, []);
+
+    const setPhase = useCallback((phase: Phase) => {
+        setCurrentPhase(phase);
+        // Persist to localStorage
+        if (typeof window !== 'undefined') {
+            localStorage.setItem('uc-fikir-phase', phase.toString());
+        }
+
+        // Show toast with phase description
+        const phaseDescriptions = {
+            1: 'Faz 1: Dijital Vitrin - Kategoriler, Ürünler, Temel Görünüm',
+            2: 'Faz 2: Analitik - + Analitik Hooks, Değerlendirme Popup',
+            3: 'Faz 3: Tam Ticaret - + Sipariş, Upsell, Stok, Zamanlı Menü',
+        };
+
+        showToast(phaseDescriptions[phase]);
+    }, [showToast]);
+
+    const setLanguage = useCallback((lang: 'tr' | 'en') => {
+        setLanguageState(lang);
+        // Persist to localStorage
+        if (typeof window !== 'undefined') {
+            localStorage.setItem('uc-fikir-language', lang);
+        }
     }, []);
 
     const setTableNumber = useCallback((number: string) => {
@@ -146,4 +187,3 @@ export const PhaseProvider: React.FC<PhaseProviderProps> = ({ children }) => {
         </PhaseContext.Provider>
     );
 };
-
