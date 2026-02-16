@@ -181,7 +181,7 @@ export default function MenuPage() {
       <header className="bg-gradient-to-r from-orange-500 to-orange-600 px-4 py-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <img src="/piiyuu-logo-acik-yazi.svg" alt="piiyuu" className="h-10" />
+            <img src="/piiyuu-logo-beyaz-yazi.svg" alt="piiyuu" className="h-10" />
           </div>
           <div className="flex items-center gap-2">
             {tableNumber && (

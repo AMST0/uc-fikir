@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { usePathname } from 'next/navigation';
 import { usePhase } from '@/context/PhaseContext';
 import { ShoppingCart, X, Plus, Minus, ArrowRight, MapPin } from 'lucide-react';
 import { translations } from '@/lib/mockData';
@@ -9,10 +10,14 @@ import { formatPrice } from '@/lib/utils';
 import { TableNumberModal } from './TableNumberModal';
 
 export const Cart: React.FC = () => {
+    const pathname = usePathname();
     const { features, cart, cartTotal, updateQuantity, removeFromCart, language, tableNumber, setTableNumber, clearCart, showToast } = usePhase();
     const [isOpen, setIsOpen] = useState(false);
     const [showTableModal, setShowTableModal] = useState(false);
     const t = translations[language];
+
+    // Hide cart on admin pages
+    if (pathname?.startsWith('/admin')) return null;
 
     if (!features.showCart) return null;
 
