@@ -12,6 +12,12 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: "piiyuu | Dijital Menü",
   description: "piiyuu dijital restoran menüsü platformu",
+  icons: {
+    icon: [
+      { url: '/piiyuu-logo.svg', type: 'image/svg+xml' },
+    ],
+    apple: '/piiyuu-logo-koyu.svg',
+  },
   viewport: {
     width: 'device-width',
     initialScale: 1,
