@@ -93,9 +93,27 @@ export async function seedDatabase() {
     // Ensure tables exist
     await initializeDatabase();
 
-    // Check if already seeded
-    const existingRestaurant = await sql`SELECT id FROM restaurants WHERE slug = 'piiyuu'`;
-    if (existingRestaurant.rows.length > 0) {
+    const restaurantId = 'rest-cemil';
+
+    // Check if restaurant exists by ID (handles slug changes from rebranding)
+    const existingById = await sql`SELECT id, slug FROM restaurants WHERE id = ${restaurantId}`;
+    if (existingById.rows.length > 0) {
+        // Restaurant exists — update branding if slug changed
+        if (existingById.rows[0].slug !== 'piiyuu') {
+            console.log('Updating restaurant branding to piiyuu...');
+            await sql`
+                UPDATE restaurants 
+                SET name = 'piiyuu', slug = 'piiyuu', logo = '/piiyuu-logo-koyu-yazi.svg', primary_color = '#f47622'
+                WHERE id = ${restaurantId}
+            `;
+        }
+        console.log('Database already seeded');
+        return;
+    }
+
+    // Also check by new slug (in case ID was different)
+    const existingBySlug = await sql`SELECT id FROM restaurants WHERE slug = 'piiyuu'`;
+    if (existingBySlug.rows.length > 0) {
         console.log('Database already seeded');
         return;
     }
@@ -103,7 +121,6 @@ export async function seedDatabase() {
     console.log('Seeding database...');
 
     // Insert restaurant
-    const restaurantId = 'rest-cemil';
     await sql`
     INSERT INTO restaurants (id, name, slug, logo, primary_color, default_phase)
     VALUES (${restaurantId}, 'piiyuu', 'piiyuu', '/piiyuu-logo-koyu-yazi.svg', '#f47622', 1)
