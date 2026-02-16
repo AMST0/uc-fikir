@@ -3,8 +3,8 @@
 :root {
   --background: #0a0a0f;
   --foreground: #ededed;
-  --primary: #e94560;
-  --primary-dark: #c13a52;
+  --primary: #f47622;
+  --primary-dark: #d4651e;
   --accent: #16213e;
   --surface: #1a1a2e;
 }
@@ -61,7 +61,7 @@ body {
 
 /* Gradient text */
 .gradient-text {
-  background: linear-gradient(to right, #e94560, #f472b6);
+  background: linear-gradient(to right, #f47622, #f59e4e);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -79,11 +79,11 @@ body {
 
   0%,
   100% {
-    box-shadow: 0 0 20px rgba(233, 69, 96, 0.3);
+    box-shadow: 0 0 20px rgba(244, 118, 34, 0.3);
   }
 
   50% {
-    box-shadow: 0 0 30px rgba(233, 69, 96, 0.5);
+    box-shadow: 0 0 30px rgba(244, 118, 34, 0.5);
   }
 }
 

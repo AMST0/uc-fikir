@@ -8,7 +8,7 @@ import { translations } from '@/lib/mockData';
 import { CategorySection, ProductModal, TableNumberModal, PromoPopup, PoweredBy } from '@/components';
 
 import { Product, Category } from '@/types';
-import { Bell, Globe, MapPin, ChefHat, RefreshCw, ArrowLeft } from 'lucide-react';
+import { Bell, Globe, MapPin, RefreshCw, ArrowLeft } from 'lucide-react';
 
 export default function MenuPage() {
   const router = useRouter();
@@ -87,7 +87,7 @@ export default function MenuPage() {
     return (
       <div className="min-h-screen bg-[#f5f0e8] flex items-center justify-center">
         <div className="text-center">
-          <RefreshCw className="w-10 h-10 text-pink-500 animate-spin mx-auto mb-4" />
+          <RefreshCw className="w-10 h-10 text-orange-500 animate-spin mx-auto mb-4" />
           <p className="text-gray-600">Menü yükleniyor...</p>
         </div>
       </div>
@@ -99,7 +99,7 @@ export default function MenuPage() {
     return (
       <main className="min-h-screen pb-32 bg-[#f5f0e8]">
         {/* Header */}
-        <header className="bg-gradient-to-r from-pink-500 to-pink-600 px-4 py-4">
+        <header className="bg-gradient-to-r from-orange-500 to-orange-600 px-4 py-4">
           <div className="flex items-center justify-between">
             <button
               onClick={() => setSelectedCategory(null)}
@@ -157,7 +157,7 @@ export default function MenuPage() {
                 </div>
                 <div className="p-3">
                   <h3 className="font-semibold text-gray-800 text-sm mb-1 line-clamp-2">{product.name[language]}</h3>
-                  <p className="text-pink-500 font-bold">₺{product.price.toFixed(2)}</p>
+                  <p className="text-orange-500 font-bold">₺{product.price.toFixed(2)}</p>
                 </div>
               </motion.div>
             ))}
@@ -178,12 +178,10 @@ export default function MenuPage() {
   return (
     <main className="min-h-screen pb-32 bg-[#f5f0e8]">
       {/* Header */}
-      <header className="bg-gradient-to-r from-pink-500 to-pink-600 px-4 py-4">
+      <header className="bg-gradient-to-r from-orange-500 to-orange-600 px-4 py-4">
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <ChefHat className="w-8 h-8 text-white" />
-            <span className="text-white text-xl font-bold">Cemil Pub</span>
-            <span className="text-white/80 text-lg">Menü</span>
+          <div className="flex items-center gap-3">
+            <img src="/piiyuu-logo-acik-yazi.svg" alt="piiyuu" className="h-10" />
           </div>
           <div className="flex items-center gap-2">
             {tableNumber && (
@@ -214,7 +212,7 @@ export default function MenuPage() {
 
       {/* Categories Section */}
       <div className="px-4 py-6">
-        <h2 className="text-pink-500 font-bold text-lg mb-4">Kategoriler</h2>
+        <h2 className="text-orange-500 font-bold text-lg mb-4">Kategoriler</h2>
 
         {/* Category Grid */}
         <div className="grid grid-cols-2 xs:grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-3 sm:gap-4 mobile-grid-2">
@@ -238,7 +236,7 @@ export default function MenuPage() {
               </div>
 
               {/* Category Name */}
-              <h3 className="text-pink-500 font-bold text-xs sm:text-sm text-center uppercase leading-tight">
+              <h3 className="text-orange-500 font-bold text-xs sm:text-sm text-center uppercase leading-tight">
                 {category.name[language]}
               </h3>
 

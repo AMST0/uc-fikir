@@ -83,7 +83,7 @@ export default function AnalyticsPage() {
     if (loading) {
         return (
             <div className="flex items-center justify-center h-64">
-                <RefreshCw className="w-8 h-8 text-rose-400 animate-spin" />
+                <RefreshCw className="w-8 h-8 text-orange-400 animate-spin" />
             </div>
         );
     }
@@ -112,7 +112,7 @@ export default function AnalyticsPage() {
                     <button
                         key={p}
                         onClick={() => setPeriod(p)}
-                        className={`px-4 py-2 rounded-xl text-sm font-medium transition-colors ${period === p ? 'bg-rose-500 text-white' : 'bg-gray-800 text-gray-400 hover:bg-gray-700'}`}
+                        className={`px-4 py-2 rounded-xl text-sm font-medium transition-colors ${period === p ? 'bg-orange-500 text-white' : 'bg-gray-800 text-gray-400 hover:bg-gray-700'}`}
                     >
                         {p === '24h' ? 'Son 24 Saat' : p === '7d' ? 'Son 7 Gün' : 'Son 30 Gün'}
                     </button>
@@ -148,7 +148,7 @@ export default function AnalyticsPage() {
                     </div>
                     <div className="bg-gray-900 rounded-2xl border border-gray-800 p-4">
                         <div className="flex items-center gap-2 mb-2">
-                            <TrendingUp size={16} className="text-rose-400" />
+                            <TrendingUp size={16} className="text-orange-400" />
                             <p className="text-gray-400 text-sm">Toplam Sipariş</p>
                         </div>
                         <p className="text-2xl font-bold text-white">{orders.length}</p>
@@ -159,8 +159,8 @@ export default function AnalyticsPage() {
 
             {/* Revenue Stats */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-                <div className="bg-gradient-to-br from-rose-500/20 to-pink-500/20 rounded-2xl border border-rose-500/30 p-6">
-                    <p className="text-rose-300 text-sm mb-2">Toplam Gelir</p>
+                <div className="bg-gradient-to-br from-orange-500/20 to-orange-600/20 rounded-2xl border border-orange-500/30 p-6">
+                    <p className="text-orange-300 text-sm mb-2">Toplam Gelir</p>
                     <p className="text-3xl font-bold text-white">{formatPrice(totalRevenue)}</p>
                     <p className="text-xs text-gray-400 mt-2">{orders.length} siparişten</p>
                 </div>
@@ -190,7 +190,7 @@ export default function AnalyticsPage() {
                     {viewData && viewData.topProducts && viewData.topProducts.filter(p => Number(p.view_count) > 0).length > 0 ? (
                         viewData.topProducts.filter(p => Number(p.view_count) > 0).slice(0, 10).map((product, index) => (
                             <div key={product.id} className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-800/50 transition-colors">
-                                <span className={`font-bold w-6 ${index < 3 ? 'text-rose-400' : 'text-gray-500'}`}>
+                                <span className={`font-bold w-6 ${index < 3 ? 'text-orange-400' : 'text-gray-500'}`}>
                                     {index + 1}
                                 </span>
                                 <img
@@ -230,7 +230,7 @@ export default function AnalyticsPage() {
                             <div key={cat.id} className="bg-gray-800/50 rounded-xl p-4 text-center">
                                 <span className="text-3xl mb-2 block">{cat.icon}</span>
                                 <p className="text-white font-medium text-sm truncate">{cat.name_tr}</p>
-                                <p className="text-rose-400 font-bold mt-1">{cat.view_count} <span className="text-gray-500 font-normal text-xs">görüntüleme</span></p>
+                                <p className="text-orange-400 font-bold mt-1">{cat.view_count} <span className="text-gray-500 font-normal text-xs">görüntüleme</span></p>
                             </div>
                         ))}
                     </div>
@@ -251,7 +251,7 @@ export default function AnalyticsPage() {
                                 </div>
                                 <div className="h-2 bg-gray-800 rounded-full overflow-hidden">
                                     <div
-                                        className="h-full bg-gradient-to-r from-rose-500 to-pink-500 rounded-full transition-all duration-500"
+                                        className="h-full bg-gradient-to-r from-orange-500 to-orange-600 rounded-full transition-all duration-500"
                                         style={{ width: `${(cat.products.length / Math.max(...categories.map(c => c.products.length), 1)) * 100}%` }}
                                     />
                                 </div>

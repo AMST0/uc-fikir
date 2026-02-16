@@ -10,8 +10,8 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Uç Fikir | Dijital Menü",
-  description: "Modern dijital restoran menüsü platformu",
+  title: "piiyuu | Dijital Menü",
+  description: "piiyuu dijital restoran menüsü platformu",
   viewport: {
     width: 'device-width',
     initialScale: 1,
@@ -19,11 +19,11 @@ export const metadata: Metadata = {
     userScalable: false,
     viewportFit: 'cover',
   },
-  themeColor: '#e94560',
+  themeColor: '#f47622',
   appleWebApp: {
     capable: true,
     statusBarStyle: 'black-translucent',
-    title: 'Uç Fikir Menü',
+    title: 'piiyuu Menü',
   },
   formatDetection: {
     telephone: true,

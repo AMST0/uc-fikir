@@ -55,14 +55,14 @@ export const UpsellGrid: React.FC<UpsellGridProps> = ({ productIds, onProductCli
                                     e.stopPropagation();
                                     addToCart(product);
                                 }}
-                                className="absolute bottom-1 right-1 w-7 h-7 bg-rose-500 rounded-full flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-opacity shadow-lg"
+                                className="absolute bottom-1 right-1 w-7 h-7 bg-orange-500 rounded-full flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-opacity shadow-lg"
                             >
                                 <Plus size={14} />
                             </motion.button>
                         </div>
                         <div className="p-2">
                             <p className="text-white text-xs font-medium truncate">{product.name[language]}</p>
-                            <p className="text-rose-400 text-xs font-semibold">{formatPrice(product.price)}</p>
+                            <p className="text-orange-400 text-xs font-semibold">{formatPrice(product.price)}</p>
                         </div>
                     </motion.div>
                 ))}

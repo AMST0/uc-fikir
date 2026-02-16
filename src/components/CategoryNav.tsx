@@ -38,7 +38,7 @@ export const CategoryNav: React.FC<CategoryNavProps> = ({
                         whileTap={{ scale: 0.95 }}
                         onClick={() => onCategoryClick(category.id)}
                         className={`flex items-center gap-2 px-4 py-2.5 rounded-xl whitespace-nowrap text-sm font-medium transition-all ${activeCategory === category.id
-                                ? 'bg-gradient-to-r from-rose-500 to-pink-600 text-white shadow-lg shadow-rose-500/25'
+                                ? 'bg-gradient-to-r from-orange-500 to-orange-600 text-white shadow-lg shadow-orange-500/25'
                                 : 'bg-gray-800/80 text-gray-400 hover:bg-gray-700 hover:text-white'
                             }`}
                     >

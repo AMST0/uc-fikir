@@ -76,7 +76,7 @@ export const Cart: React.FC = () => {
                 initial={{ opacity: 0, y: 50 }}
                 animate={{ opacity: 1, y: 0 }}
                 onClick={() => setIsOpen(true)}
-                className="fixed bottom-[calc(1.5rem+env(safe-area-inset-bottom))] left-1/2 -translate-x-1/2 z-50 flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-rose-500 to-pink-600 rounded-full shadow-lg shadow-rose-500/30 text-white font-semibold hover:shadow-xl hover:shadow-rose-500/40 transition-all active:scale-95"
+                className="fixed bottom-[calc(1.5rem+env(safe-area-inset-bottom))] left-1/2 -translate-x-1/2 z-50 flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-orange-500 to-orange-600 rounded-full shadow-lg shadow-orange-500/30 text-white font-semibold hover:shadow-xl hover:shadow-orange-500/40 transition-all active:scale-95"
             >
                 <ShoppingCart size={20} />
                 <span>Sepetim</span>
@@ -84,7 +84,7 @@ export const Cart: React.FC = () => {
                     <motion.span
                         initial={{ scale: 0 }}
                         animate={{ scale: 1 }}
-                        className="w-6 h-6 bg-white text-rose-600 rounded-full text-xs font-bold flex items-center justify-center"
+                        className="w-6 h-6 bg-white text-orange-600 rounded-full text-xs font-bold flex items-center justify-center"
                     >
                         {itemCount}
                     </motion.span>
@@ -125,9 +125,9 @@ export const Cart: React.FC = () => {
                                 <div className="flex items-center gap-2">
                                     {/* Table Number Badge */}
                                     {tableNumber && (
-                                        <div className="flex items-center gap-1.5 px-3 py-1.5 bg-rose-500/20 rounded-full">
-                                            <MapPin size={14} className="text-rose-400" />
-                                            <span className="text-rose-400 text-sm font-medium">Masa {tableNumber}</span>
+                                        <div className="flex items-center gap-1.5 px-3 py-1.5 bg-orange-500/20 rounded-full">
+                                            <MapPin size={14} className="text-orange-400" />
+                                            <span className="text-orange-400 text-sm font-medium">Masa {tableNumber}</span>
                                         </div>
                                     )}
                                     <button
@@ -165,7 +165,7 @@ export const Cart: React.FC = () => {
                                                 <h3 className="text-white font-medium truncate text-sm sm:text-base">
                                                     {item.product.name[language]}
                                                 </h3>
-                                                <p className="text-rose-400 text-sm font-semibold">
+                                                <p className="text-orange-400 text-sm font-semibold">
                                                     {formatPrice(item.product.price * item.quantity)}
                                                 </p>
                                             </div>
@@ -208,7 +208,7 @@ export const Cart: React.FC = () => {
                                     </div>
                                     <button
                                         onClick={handleOrderClick}
-                                        className="w-full py-4 bg-gradient-to-r from-rose-500 to-pink-600 rounded-xl text-white font-semibold flex items-center justify-center gap-2 hover:opacity-90 transition-opacity active:scale-[0.98]"
+                                        className="w-full py-4 bg-gradient-to-r from-orange-500 to-orange-600 rounded-xl text-white font-semibold flex items-center justify-center gap-2 hover:opacity-90 transition-opacity active:scale-[0.98]"
                                     >
                                         {t.orderNow}
                                         <ArrowRight size={18} />

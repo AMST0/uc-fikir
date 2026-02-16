@@ -90,7 +90,7 @@ export default function SettingsPage() {
                             key={p.phase}
                             onClick={() => handlePhaseChange(p.phase)}
                             className={`relative p-4 rounded-xl border-2 cursor-pointer transition-all ${currentPhase === p.phase
-                                ? 'border-rose-500 bg-rose-500/10'
+                                ? 'border-orange-500 bg-orange-500/10'
                                 : 'border-gray-700 hover:border-gray-600 bg-gray-800/50'
                                 }`}
                         >
@@ -102,7 +102,7 @@ export default function SettingsPage() {
                                     <div className="flex items-center gap-2">
                                         <h4 className="text-white font-semibold">{p.label}</h4>
                                         {currentPhase === p.phase && (
-                                            <span className="px-2 py-0.5 bg-rose-500/20 text-rose-400 text-xs rounded-full font-medium">
+                                            <span className="px-2 py-0.5 bg-orange-500/20 text-orange-400 text-xs rounded-full font-medium">
                                                 Aktif
                                             </span>
                                         )}
@@ -117,7 +117,7 @@ export default function SettingsPage() {
                                     </div>
                                 </div>
                                 {currentPhase === p.phase && (
-                                    <div className="w-6 h-6 bg-rose-500 rounded-full flex items-center justify-center">
+                                    <div className="w-6 h-6 bg-orange-500 rounded-full flex items-center justify-center">
                                         <Check size={14} className="text-white" />
                                     </div>
                                 )}
@@ -151,7 +151,7 @@ export default function SettingsPage() {
                     <p>• <span className="text-white">{stats?.products ?? '...'}</span> ürün</p>
                     <p>• <span className="text-white">Vercel Postgres</span> veritabanı</p>
                     <p>• <span className="text-white">Serverless</span> altyapı</p>
-                    <p>• Aktif Faz: <span className="text-rose-400 font-medium">Faz {currentPhase}</span></p>
+                    <p>• Aktif Faz: <span className="text-orange-400 font-medium">Faz {currentPhase}</span></p>
                 </div>
             </div>
         </div>

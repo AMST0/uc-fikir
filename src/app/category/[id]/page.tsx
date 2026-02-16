@@ -56,7 +56,7 @@ export default function CategoryPage() {
         return (
             <div className="min-h-screen bg-[#f5f0e8] flex items-center justify-center">
                 <div className="text-center">
-                    <RefreshCw className="w-10 h-10 text-pink-500 animate-spin mx-auto mb-4" />
+                    <RefreshCw className="w-10 h-10 text-orange-500 animate-spin mx-auto mb-4" />
                     <p className="text-gray-600">Yükleniyor...</p>
                 </div>
             </div>
@@ -70,7 +70,7 @@ export default function CategoryPage() {
                     <p className="text-gray-600 mb-4">Kategori bulunamadı</p>
                     <button
                         onClick={() => router.push('/')}
-                        className="px-4 py-2 bg-pink-500 text-white rounded-xl"
+                        className="px-4 py-2 bg-orange-500 text-white rounded-xl"
                     >
                         Ana Sayfaya Dön
                     </button>
@@ -82,7 +82,7 @@ export default function CategoryPage() {
     return (
         <main className="min-h-screen pb-32 bg-[#f5f0e8]">
             {/* Header */}
-            <header className="bg-gradient-to-r from-pink-500 to-pink-600 px-4 py-4">
+            <header className="bg-gradient-to-r from-orange-500 to-orange-600 px-4 py-4">
                 <div className="flex items-center justify-between">
                     <button
                         onClick={() => router.push('/')}
@@ -146,7 +146,7 @@ export default function CategoryPage() {
                             </div>
                             <div className="p-3">
                                 <h3 className="font-semibold text-gray-800 text-sm mb-1 line-clamp-2">{product.name[language]}</h3>
-                                <p className="text-pink-500 font-bold">₺{product.price.toFixed(2)}</p>
+                                <p className="text-orange-500 font-bold">₺{product.price.toFixed(2)}</p>
                             </div>
                         </motion.div>
                     ))}

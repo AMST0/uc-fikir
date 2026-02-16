@@ -88,7 +88,7 @@ export const ProductModal: React.FC<ProductModalProps> = ({ product, onClose, on
                             <h2 className="text-2xl font-bold text-white mb-2">{product.name[language]}</h2>
                             <p className="text-gray-400 mb-4">{product.description[language]}</p>
 
-                            <div className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-rose-400 to-pink-500 mb-6">
+                            <div className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-orange-500 mb-6">
                                 {formatPrice(product.price)}
                             </div>
 
@@ -117,7 +117,7 @@ export const ProductModal: React.FC<ProductModalProps> = ({ product, onClose, on
 
                                     <button
                                         onClick={handleAddToCart}
-                                        className="flex-1 py-3 bg-gradient-to-r from-rose-500 to-pink-600 rounded-xl text-white font-semibold hover:opacity-90 transition-opacity flex items-center justify-center gap-2"
+                                        className="flex-1 py-3 bg-gradient-to-r from-orange-500 to-orange-600 rounded-xl text-white font-semibold hover:opacity-90 transition-opacity flex items-center justify-center gap-2"
                                     >
                                         <Plus size={18} />
                                         {t.addToCart} - {formatPrice(product.price * quantity)}

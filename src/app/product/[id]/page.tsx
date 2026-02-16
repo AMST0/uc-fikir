@@ -88,7 +88,7 @@ export default function ProductPage() {
                     animate={{ opacity: 1, scale: 1 }}
                     className="text-center"
                 >
-                    <RefreshCw className="w-12 h-12 text-pink-500 animate-spin mx-auto mb-4" />
+                    <RefreshCw className="w-12 h-12 text-orange-500 animate-spin mx-auto mb-4" />
                     <p className="text-gray-400 font-medium">Yükleniyor...</p>
                 </motion.div>
             </div>
@@ -106,7 +106,7 @@ export default function ProductPage() {
                     <p className="text-gray-400 mb-4">Ürün bulunamadı</p>
                     <button
                         onClick={() => router.push('/')}
-                        className="px-6 py-3 bg-gradient-to-r from-pink-500 to-rose-500 text-white rounded-2xl font-medium shadow-lg shadow-pink-500/25 hover:shadow-pink-500/40 transition-all"
+                        className="px-6 py-3 bg-gradient-to-r from-orange-500 to-orange-600 text-white rounded-2xl font-medium shadow-lg shadow-orange-500/25 hover:shadow-orange-500/40 transition-all"
                     >
                         Ana Sayfaya Dön
                     </button>
@@ -197,9 +197,9 @@ export default function ProductPage() {
                         transition={{ delay: 0.4 }}
                         className="absolute top-4 left-4"
                     >
-                        <div className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-pink-500/20 to-rose-500/20 rounded-full border border-pink-500/30">
+                        <div className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-orange-500/20 to-orange-600/20 rounded-full border border-orange-500/30">
                             <span className="text-lg">{category.icon}</span>
-                            <span className="text-pink-400 font-medium text-sm">{category.name[language]}</span>
+                            <span className="text-orange-400 font-medium text-sm">{category.name[language]}</span>
                         </div>
                     </motion.div>
                 )}
@@ -243,9 +243,9 @@ export default function ProductPage() {
                             </div>
                         )}
                         {cartQuantity > 0 && (
-                            <div className="flex items-center gap-2 px-3 py-1.5 bg-pink-500/20 rounded-full text-sm border border-pink-500/30">
-                                <ShoppingCart size={14} className="text-pink-400" />
-                                <span className="text-pink-400">Sepette: {cartQuantity}</span>
+                            <div className="flex items-center gap-2 px-3 py-1.5 bg-orange-500/20 rounded-full text-sm border border-orange-500/30">
+                                <ShoppingCart size={14} className="text-orange-400" />
+                                <span className="text-orange-400">Sepette: {cartQuantity}</span>
                             </div>
                         )}
                     </motion.div>
@@ -259,7 +259,7 @@ export default function ProductPage() {
                     >
                         <div>
                             <span className="text-gray-500 text-sm">Fiyat</span>
-                            <p className="text-4xl font-bold bg-gradient-to-r from-pink-400 to-rose-400 bg-clip-text text-transparent">
+                            <p className="text-4xl font-bold bg-gradient-to-r from-orange-400 to-orange-500 bg-clip-text text-transparent">
                                 ₺{product.price.toFixed(2)}
                             </p>
                         </div>
@@ -293,7 +293,7 @@ export default function ProductPage() {
                             transition={{ delay: 0.5 }}
                             whileTap={{ scale: 0.98 }}
                             onClick={handleAddToCart}
-                            className="w-full py-4 bg-gradient-to-r from-pink-500 to-rose-500 text-white font-bold text-lg rounded-2xl flex items-center justify-center gap-3 shadow-lg shadow-pink-500/25 hover:shadow-pink-500/40 transition-all active:scale-[0.98]"
+                            className="w-full py-4 bg-gradient-to-r from-orange-500 to-orange-600 text-white font-bold text-lg rounded-2xl flex items-center justify-center gap-3 shadow-lg shadow-orange-500/25 hover:shadow-orange-500/40 transition-all active:scale-[0.98]"
                         >
                             <ShoppingCart size={22} />
                             Sepete Ekle • ₺{(product.price * quantity).toFixed(2)}

@@ -122,7 +122,7 @@ export default function MenuManagementPage() {
     if (loading) {
         return (
             <div className="flex items-center justify-center h-64">
-                <RefreshCw className="w-8 h-8 text-rose-400 animate-spin" />
+                <RefreshCw className="w-8 h-8 text-orange-400 animate-spin" />
             </div>
         );
     }
@@ -144,7 +144,7 @@ export default function MenuManagementPage() {
                     </button>
                     <button
                         onClick={() => setShowAddModal(true)}
-                        className="flex items-center gap-2 px-4 py-2 bg-rose-500 hover:bg-rose-600 rounded-xl text-white font-medium transition-colors"
+                        className="flex items-center gap-2 px-4 py-2 bg-orange-500 hover:bg-orange-600 rounded-xl text-white font-medium transition-colors"
                     >
                         <Plus size={18} />
                         Yeni Ürün
@@ -182,7 +182,7 @@ export default function MenuManagementPage() {
                                     <p className="text-gray-500 text-sm truncate">{product.description.tr}</p>
                                 </div>
                                 <div className="flex items-center gap-3">
-                                    <span className="text-rose-400 font-semibold">{formatPrice(product.price)}</span>
+                                    <span className="text-orange-400 font-semibold">{formatPrice(product.price)}</span>
                                     <button
                                         onClick={() => handleToggleAvailability(product)}
                                         className={`p-2 rounded-lg transition-colors ${product.is_available ? 'text-green-400 bg-green-500/20 hover:bg-green-500/30' : 'text-red-400 bg-red-500/20 hover:bg-red-500/30'}`}
@@ -221,7 +221,7 @@ export default function MenuManagementPage() {
                                     type="text"
                                     value={formData.name_tr}
                                     onChange={(e) => setFormData({ ...formData, name_tr: e.target.value })}
-                                    className="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-xl text-white focus:border-rose-500 focus:outline-none"
+                                    className="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-xl text-white focus:border-orange-500 focus:outline-none"
                                 />
                             </div>
                             <div>
@@ -230,7 +230,7 @@ export default function MenuManagementPage() {
                                     type="text"
                                     value={formData.name_en}
                                     onChange={(e) => setFormData({ ...formData, name_en: e.target.value })}
-                                    className="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-xl text-white focus:border-rose-500 focus:outline-none"
+                                    className="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-xl text-white focus:border-orange-500 focus:outline-none"
                                 />
                             </div>
                             <div>
@@ -238,7 +238,7 @@ export default function MenuManagementPage() {
                                 <textarea
                                     value={formData.desc_tr}
                                     onChange={(e) => setFormData({ ...formData, desc_tr: e.target.value })}
-                                    className="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-xl text-white focus:border-rose-500 focus:outline-none resize-none"
+                                    className="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-xl text-white focus:border-orange-500 focus:outline-none resize-none"
                                     rows={2}
                                 />
                             </div>
@@ -248,7 +248,7 @@ export default function MenuManagementPage() {
                                     type="number"
                                     value={formData.price}
                                     onChange={(e) => setFormData({ ...formData, price: e.target.value })}
-                                    className="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-xl text-white focus:border-rose-500 focus:outline-none"
+                                    className="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-xl text-white focus:border-orange-500 focus:outline-none"
                                 />
                             </div>
                             <div>
@@ -268,7 +268,7 @@ export default function MenuManagementPage() {
 
                                 {/* File upload */}
                                 <div className="flex gap-2">
-                                    <label className="flex-1 flex items-center justify-center gap-2 px-4 py-2 bg-gray-800 border border-gray-700 border-dashed rounded-xl text-gray-400 hover:border-rose-500 hover:text-rose-400 cursor-pointer transition-colors">
+                                    <label className="flex-1 flex items-center justify-center gap-2 px-4 py-2 bg-gray-800 border border-gray-700 border-dashed rounded-xl text-gray-400 hover:border-orange-500 hover:text-orange-400 cursor-pointer transition-colors">
                                         <Plus size={16} />
                                         <span>Dosya Seç</span>
                                         <input
@@ -308,7 +308,7 @@ export default function MenuManagementPage() {
                                         placeholder="veya URL yapıştır..."
                                         value={formData.image}
                                         onChange={(e) => setFormData({ ...formData, image: e.target.value })}
-                                        className="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-xl text-white text-sm focus:border-rose-500 focus:outline-none"
+                                        className="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-xl text-white text-sm focus:border-orange-500 focus:outline-none"
                                     />
                                 </div>
                             </div>
@@ -324,7 +324,7 @@ export default function MenuManagementPage() {
                             <button
                                 onClick={handleSaveProduct}
                                 disabled={saving}
-                                className="flex-1 py-2 bg-rose-500 hover:bg-rose-600 text-white rounded-xl transition-colors disabled:opacity-50"
+                                className="flex-1 py-2 bg-orange-500 hover:bg-orange-600 text-white rounded-xl transition-colors disabled:opacity-50"
                             >
                                 {saving ? 'Kaydediliyor...' : 'Kaydet'}
                             </button>

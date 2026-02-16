@@ -64,7 +64,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onClick, inde
                             e.stopPropagation();
                             addToCart(product);
                         }}
-                        className="absolute bottom-2 right-2 w-9 h-9 bg-rose-500 hover:bg-rose-600 rounded-full flex items-center justify-center text-white shadow-lg shadow-rose-500/40 transition-colors"
+                        className="absolute bottom-2 right-2 w-9 h-9 bg-orange-500 hover:bg-orange-600 rounded-full flex items-center justify-center text-white shadow-lg shadow-orange-500/40 transition-colors"
                     >
                         <Plus size={18} strokeWidth={2.5} />
                     </motion.button>
@@ -82,7 +82,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onClick, inde
 
                 {/* Price - Prominent */}
                 <div className="flex items-center justify-between">
-                    <span className="text-lg font-bold text-rose-400">
+                    <span className="text-lg font-bold text-orange-400">
                         {formatPrice(product.price)}
                     </span>
                 </div>

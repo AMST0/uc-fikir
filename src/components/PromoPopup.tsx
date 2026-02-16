@@ -27,7 +27,7 @@ export const PromoPopup = () => {
                         className="relative w-full max-w-sm bg-white rounded-3xl overflow-hidden shadow-2xl"
                     >
                         {/* Header Background */}
-                        <div className="h-32 bg-gradient-to-br from-pink-500 to-rose-600 flex items-center justify-center relative overflow-hidden">
+                        <div className="h-32 bg-gradient-to-br from-orange-500 to-orange-600 flex items-center justify-center relative overflow-hidden">
                             <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?w=800&q=80')] bg-cover bg-center opacity-30 mix-blend-overlay" />
                             <PartyPopper className="w-16 h-16 text-white/90 relative z-10" />
 
@@ -43,21 +43,21 @@ export const PromoPopup = () => {
                         <div className="p-6 text-center">
                             <h3 className="text-2xl font-bold text-gray-800 mb-2">Hoş Geldiniz! 🎉</h3>
                             <p className="text-gray-600 mb-6">
-                                Cemil Pub'a hoş geldiniz. Keyifli vakit geçirmenizi dileriz.
+                                piiyuu'ya hoş geldiniz. Keyifli vakit geçirmenizi dileriz.
                             </p>
 
-                            <div className="bg-rose-50 rounded-2xl p-4 mb-6 border border-rose-100">
-                                <div className="flex items-center justify-center gap-2 text-rose-600 font-bold mb-1">
+                            <div className="bg-orange-50 rounded-2xl p-4 mb-6 border border-orange-100">
+                                <div className="flex items-center justify-center gap-2 text-orange-600 font-bold mb-1">
                                     <Clock size={20} />
                                     <span>HAPPY HOUR</span>
                                 </div>
-                                <p className="text-rose-500 font-medium">Her Gün 17:00 - 20:00</p>
+                                <p className="text-orange-500 font-medium">Her Gün 17:00 - 20:00</p>
                                 <p className="text-sm text-gray-500 mt-1">Tüm kokteyllerde %20 indirim!</p>
                             </div>
 
                             <button
                                 onClick={() => setIsOpen(false)}
-                                className="w-full py-3 bg-gradient-to-r from-pink-500 to-rose-600 text-white font-bold rounded-xl shadow-lg shadow-rose-200 hover:shadow-xl hover:scale-[1.02] transition-all"
+                                className="w-full py-3 bg-gradient-to-r from-orange-500 to-orange-600 text-white font-bold rounded-xl shadow-lg shadow-orange-200 hover:shadow-xl hover:scale-[1.02] transition-all"
                             >
                                 Menüyü İncele
                             </button>

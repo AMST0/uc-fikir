@@ -103,7 +103,7 @@ export default function AdminDashboardPage() {
     if (loading) {
         return (
             <div className="flex items-center justify-center h-64">
-                <RefreshCw className="w-8 h-8 text-rose-400 animate-spin" />
+                <RefreshCw className="w-8 h-8 text-orange-400 animate-spin" />
             </div>
         );
     }
@@ -135,11 +135,11 @@ export default function AdminDashboardPage() {
                         className="bg-gray-900 rounded-2xl p-4 border border-gray-800"
                     >
                         <div className="flex items-start justify-between mb-3">
-                            <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${stat.color === 'rose' ? 'bg-rose-500/20' :
+                            <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${stat.color === 'rose' ? 'bg-orange-500/20' :
                                 stat.color === 'blue' ? 'bg-blue-500/20' :
                                     stat.color === 'amber' ? 'bg-amber-500/20' : 'bg-green-500/20'
                                 }`}>
-                                <stat.icon className={`w-5 h-5 ${stat.color === 'rose' ? 'text-rose-400' :
+                                <stat.icon className={`w-5 h-5 ${stat.color === 'rose' ? 'text-orange-400' :
                                     stat.color === 'blue' ? 'text-blue-400' :
                                         stat.color === 'amber' ? 'text-amber-400' : 'text-green-400'
                                     }`} />

@@ -39,11 +39,11 @@ export default function AdminLayout({
             {/* Sidebar */}
             <aside className="w-64 bg-gray-900 border-r border-gray-800 p-4 hidden lg:block">
                 <div className="flex items-center gap-3 mb-8">
-                    <div className="w-10 h-10 bg-gradient-to-br from-rose-500 to-pink-600 rounded-xl flex items-center justify-center">
-                        <UtensilsCrossed className="w-5 h-5 text-white" />
+                    <div className="w-10 h-10 bg-gradient-to-br from-orange-500 to-orange-600 rounded-xl flex items-center justify-center">
+                        <img src="/piiyuu-logo.svg" alt="piiyuu" className="w-6 h-6" />
                     </div>
                     <div>
-                        <h1 className="text-white font-bold">Cemil Pub</h1>
+                        <h1 className="text-white font-bold">piiyuu</h1>
                         <p className="text-gray-500 text-xs">Admin Panel</p>
                     </div>
                 </div>
@@ -54,7 +54,7 @@ export default function AdminLayout({
                             key={tab.id}
                             href={tab.href}
                             className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all ${isActiveTab(tab.href)
-                                ? 'bg-rose-500/20 text-rose-400'
+                                ? 'bg-orange-500/20 text-orange-400'
                                 : 'text-gray-400 hover:bg-gray-800 hover:text-white'
                                 }`}
                         >
@@ -80,7 +80,7 @@ export default function AdminLayout({
                         <Link
                             key={tab.id}
                             href={tab.href}
-                            className={`flex flex-col items-center gap-1 px-3 py-2 rounded-lg ${isActiveTab(tab.href) ? 'text-rose-400' : 'text-gray-500'
+                            className={`flex flex-col items-center gap-1 px-3 py-2 rounded-lg ${isActiveTab(tab.href) ? 'text-orange-400' : 'text-gray-500'
                                 }`}
                         >
                             <tab.icon size={20} />

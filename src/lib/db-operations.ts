@@ -88,13 +88,13 @@ function getProductImage(name: string): string {
     return productImages[name] || 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&h=300&fit=crop';
 }
 
-// Seed data based on Cemil Pub style menu
+// Seed data based on piiyuu style menu
 export async function seedDatabase() {
     // Ensure tables exist
     await initializeDatabase();
 
     // Check if already seeded
-    const existingRestaurant = await sql`SELECT id FROM restaurants WHERE slug = 'cemil-pub'`;
+    const existingRestaurant = await sql`SELECT id FROM restaurants WHERE slug = 'piiyuu'`;
     if (existingRestaurant.rows.length > 0) {
         console.log('Database already seeded');
         return;
@@ -106,7 +106,7 @@ export async function seedDatabase() {
     const restaurantId = 'rest-cemil';
     await sql`
     INSERT INTO restaurants (id, name, slug, logo, primary_color, default_phase)
-    VALUES (${restaurantId}, 'Cemil Pub', 'cemil-pub', '/logo.png', '#e94560', 1)
+    VALUES (${restaurantId}, 'piiyuu', 'piiyuu', '/piiyuu-logo-koyu-yazi.svg', '#f47622', 1)
   `;
 
     // Categories with products (based on typical pub menu)

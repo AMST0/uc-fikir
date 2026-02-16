@@ -1,14 +1,14 @@
-// Mock data for Uç Fikir Digital Menu Platform
+// Mock data for piiyuu Digital Menu Platform
 import { Restaurant } from '@/types';
 
 export const mockRestaurant: Restaurant = {
     id: 'rest-001',
-    name: 'Uç Fikir Bistro',
-    slug: 'uc-fikir-bistro',
-    logo: '/logo.png',
+    name: 'piiyuu',
+    slug: 'piiyuu',
+    logo: '/piiyuu-logo-koyu-yazi.svg',
     theme: {
         primaryColor: '#1a1a2e',
-        accentColor: '#e94560',
+        accentColor: '#f47622',
     },
     defaultPhase: 1,
     categories: [

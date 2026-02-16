@@ -68,11 +68,11 @@ export const ReviewFunnel: React.FC = () => {
                         exit={{ opacity: 0, scale: 0.9, y: 20 }}
                         className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-[201] w-full max-w-sm"
                     >
-                        <div className="bg-gradient-to-br from-gray-900 to-gray-800 rounded-2xl p-6 shadow-2xl border border-gray-700/50 mx-4">
+                        <div className="relative bg-gradient-to-br from-gray-900 to-gray-800 rounded-2xl p-6 shadow-2xl border border-gray-700/50 mx-4">
                             {/* Close Button */}
                             <button
                                 onClick={() => setIsVisible(false)}
-                                className="absolute top-3 right-3 p-2 hover:bg-gray-700/50 rounded-lg transition-colors"
+                                className="absolute top-3 right-3 p-2 hover:bg-gray-700/50 rounded-lg transition-colors z-10"
                             >
                                 <X className="w-5 h-5 text-gray-400" />
                             </button>
@@ -97,8 +97,8 @@ export const ReviewFunnel: React.FC = () => {
                                         >
                                             <Star
                                                 className={`w-8 h-8 transition-colors ${star <= selectedRating
-                                                        ? 'text-amber-400'
-                                                        : 'text-gray-600'
+                                                    ? 'text-amber-400'
+                                                    : 'text-gray-600'
                                                     }`}
                                                 fill={star <= selectedRating ? 'currentColor' : 'none'}
                                             />

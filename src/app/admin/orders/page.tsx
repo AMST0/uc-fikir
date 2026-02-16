@@ -115,7 +115,7 @@ export default function OrdersPage() {
     if (loading) {
         return (
             <div className="flex items-center justify-center h-64">
-                <RefreshCw className="w-8 h-8 text-rose-400 animate-spin" />
+                <RefreshCw className="w-8 h-8 text-orange-400 animate-spin" />
             </div>
         );
     }
@@ -148,7 +148,7 @@ export default function OrdersPage() {
                     <button
                         key={f.id}
                         onClick={() => setFilter(f.id)}
-                        className={`px-4 py-2 rounded-xl text-sm font-medium whitespace-nowrap transition-colors ${filter === f.id ? 'bg-rose-500 text-white' : 'bg-gray-800 text-gray-400 hover:bg-gray-700'
+                        className={`px-4 py-2 rounded-xl text-sm font-medium whitespace-nowrap transition-colors ${filter === f.id ? 'bg-orange-500 text-white' : 'bg-gray-800 text-gray-400 hover:bg-gray-700'
                             }`}
                     >
                         {f.label}
@@ -180,7 +180,7 @@ export default function OrdersPage() {
                                     </div>
                                 </div>
                                 <div className="text-right">
-                                    <p className="text-rose-400 font-bold text-lg">{formatPrice(order.total)}</p>
+                                    <p className="text-orange-400 font-bold text-lg">{formatPrice(order.total)}</p>
                                     <span className={`inline-block px-2.5 py-1 rounded-full text-xs font-medium ${statusColors[order.status]?.bg || 'bg-gray-500/20'} ${statusColors[order.status]?.text || 'text-gray-400'}`}>
                                         {statusColors[order.status]?.label || order.status}
                                     </span>
@@ -239,8 +239,8 @@ export default function OrdersPage() {
                             {/* Modal Header */}
                             <div className="flex items-center justify-between p-4 border-b border-gray-800">
                                 <div className="flex items-center gap-3">
-                                    <div className="w-10 h-10 bg-rose-500/20 rounded-xl flex items-center justify-center">
-                                        <ShoppingBag size={20} className="text-rose-400" />
+                                    <div className="w-10 h-10 bg-orange-500/20 rounded-xl flex items-center justify-center">
+                                        <ShoppingBag size={20} className="text-orange-400" />
                                     </div>
                                     <div>
                                         <h2 className="text-white font-bold">Sipariş #{selectedOrder.id.slice(-6).toUpperCase()}</h2>
@@ -259,7 +259,7 @@ export default function OrdersPage() {
                             <div className="p-4 overflow-y-auto max-h-[60vh]">
                                 {loadingDetails ? (
                                     <div className="flex items-center justify-center py-8">
-                                        <RefreshCw className="w-6 h-6 text-rose-400 animate-spin" />
+                                        <RefreshCw className="w-6 h-6 text-orange-400 animate-spin" />
                                     </div>
                                 ) : (
                                     <>
@@ -300,7 +300,7 @@ export default function OrdersPage() {
                                                             <p className="text-gray-500 text-sm">{formatPrice(item.unitPrice)} x {item.quantity}</p>
                                                         </div>
                                                         <div className="text-right">
-                                                            <p className="text-rose-400 font-bold">{formatPrice(item.subtotal)}</p>
+                                                            <p className="text-orange-400 font-bold">{formatPrice(item.subtotal)}</p>
                                                         </div>
                                                     </div>
                                                 ))

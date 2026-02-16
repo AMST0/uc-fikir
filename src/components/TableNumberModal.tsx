@@ -73,7 +73,7 @@ export const TableNumberModal: React.FC<TableNumberModalProps> = ({
                     >
                         <div className="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 rounded-3xl p-6 shadow-2xl border border-gray-700/50 relative overflow-hidden">
                             {/* Background Decoration */}
-                            <div className="absolute top-0 right-0 w-32 h-32 bg-rose-500/10 rounded-full blur-3xl" />
+                            <div className="absolute top-0 right-0 w-32 h-32 bg-orange-500/10 rounded-full blur-3xl" />
                             <div className="absolute bottom-0 left-0 w-32 h-32 bg-purple-500/10 rounded-full blur-3xl" />
 
                             {/* Close Button (only for order mode) */}
@@ -92,7 +92,7 @@ export const TableNumberModal: React.FC<TableNumberModalProps> = ({
                                     initial={{ scale: 0 }}
                                     animate={{ scale: 1 }}
                                     transition={{ type: 'spring', delay: 0.1 }}
-                                    className="w-20 h-20 bg-gradient-to-br from-rose-500 to-pink-600 rounded-2xl flex items-center justify-center shadow-lg shadow-rose-500/30"
+                                    className="w-20 h-20 bg-gradient-to-br from-orange-500 to-orange-600 rounded-2xl flex items-center justify-center shadow-lg shadow-orange-500/30"
                                 >
                                     {isWelcome ? (
                                         <ChefHat className="w-10 h-10 text-white" />
@@ -122,7 +122,7 @@ export const TableNumberModal: React.FC<TableNumberModalProps> = ({
                                     value={tableNumber}
                                     onChange={(e) => setTableNumber(e.target.value)}
                                     placeholder={t.tablePlaceholder}
-                                    className="w-full px-4 py-4 bg-gray-800/50 border border-gray-700 rounded-xl text-white text-center text-2xl font-bold placeholder:text-gray-600 focus:outline-none focus:border-rose-500 focus:ring-2 focus:ring-rose-500/20 transition-all"
+                                    className="w-full px-4 py-4 bg-gray-800/50 border border-gray-700 rounded-xl text-white text-center text-2xl font-bold placeholder:text-gray-600 focus:outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 transition-all"
                                     autoFocus
                                 />
                             </div>
@@ -138,7 +138,7 @@ export const TableNumberModal: React.FC<TableNumberModalProps> = ({
                                         }
                                     }}
                                     disabled={!tableNumber.trim()}
-                                    className="w-full py-4 bg-gradient-to-r from-rose-500 to-pink-600 rounded-xl text-white font-semibold text-lg hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
+                                    className="w-full py-4 bg-gradient-to-r from-orange-500 to-orange-600 rounded-xl text-white font-semibold text-lg hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
                                 >
                                     {isWelcome ? t.startBrowsing : t.completeOrder}
                                 </motion.button>
